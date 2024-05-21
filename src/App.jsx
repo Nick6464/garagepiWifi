@@ -61,7 +61,7 @@ function App() {
                   <ListItem key={network.mac}>
                     <ListItemButton onClick={() => setSelectedNetwork(network)}>
                       <WifiStrengthIcon
-                        signal={network.BARS}
+                        signal={network.SIGNAL}
                         security={network.SECURITY}
                       />
                       {network.ssid}
@@ -155,7 +155,7 @@ function App() {
 
 export default App;
 
-function WifiStrengthIcon({ signalStrength, security }) {
+function WifiStrengthIcon({ signal, security }) {
   // Excellent (Full Strength): ≥ -50 dBm
   // Good: -50 dBm to -60 dBm
   // Fair: -60 dBm to -70 dBm
@@ -163,9 +163,7 @@ function WifiStrengthIcon({ signalStrength, security }) {
 
   // security WPA2 - locked
 
-  const signal = signalStrength.length;
-
-  if (signal >= 4) {
+  if (signal >= -50) {
     return (
       <ListItemIcon>
         {security.includes("WPA") ? (
@@ -175,7 +173,7 @@ function WifiStrengthIcon({ signalStrength, security }) {
         )}
       </ListItemIcon>
     );
-  } else if (signal >= 3) {
+  } else if (signal >= -60) {
     return (
       <ListItemIcon>
         {security.includes("WPA") ? (
@@ -185,7 +183,7 @@ function WifiStrengthIcon({ signalStrength, security }) {
         )}
       </ListItemIcon>
     );
-  } else if (signal >= 2) {
+  } else if (signal >= -70) {
     return (
       <ListItemIcon>
         {security.includes("WPA") ? (
