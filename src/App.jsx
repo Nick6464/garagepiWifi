@@ -160,7 +160,7 @@ function WifiStrengthIcon({ signal, security }) {
   if (signal >= -50) {
     return (
       <ListItemIcon>
-        {security.includes('WPA') ? (
+        {security && security.includes('WPA') ? (
           <SignalWifi1BarLock sx={{ color: '#fff' }} />
         ) : (
           <SignalWifi1Bar sx={{ color: '#fff' }} />
@@ -170,7 +170,7 @@ function WifiStrengthIcon({ signal, security }) {
   } else if (signal >= -60) {
     return (
       <ListItemIcon>
-        {security.includes('WPA') ? (
+        {security && security.includes('WPA') ? (
           <SignalWifi2BarLock sx={{ color: '#fff' }} />
         ) : (
           <SignalWifi2Bar sx={{ color: '#fff' }} />
@@ -180,7 +180,7 @@ function WifiStrengthIcon({ signal, security }) {
   } else if (signal >= -70) {
     return (
       <ListItemIcon>
-        {security.includes('WPA') ? (
+        {security && security.includes('WPA') ? (
           <SignalWifi3BarLock sx={{ color: '#fff' }} />
         ) : (
           <SignalWifi3Bar sx={{ color: '#fff' }} />
@@ -190,7 +190,7 @@ function WifiStrengthIcon({ signal, security }) {
   } else {
     return (
       <ListItemIcon>
-        {security.includes('WPA') ? (
+        {security && security.includes('WPA') ? (
           <SignalWifi4BarLock sx={{ color: '#fff' }} />
         ) : (
           <SignalWifi4Bar sx={{ color: '#fff' }} />
