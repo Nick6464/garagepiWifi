@@ -58,13 +58,14 @@ function App() {
             <List>
               {wifiNetworks &&
                 wifiNetworks.map((network) => (
-                  <ListItem key={network.mac}>
+                  <ListItem key={network.BSSID}>
+                    {network}
                     <ListItemButton onClick={() => setSelectedNetwork(network)}>
                       <WifiStrengthIcon
                         signal={network.SIGNAL}
                         security={network.SECURITY}
                       />
-                      {network.ssid}
+                      {network.SSID}
                     </ListItemButton>
                   </ListItem>
                 ))}
