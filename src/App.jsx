@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 import {
   Button,
   Container,
@@ -11,8 +11,8 @@ import {
   TextField,
   ThemeProvider,
   Typography,
-} from "@mui/material";
-import axios from "axios";
+} from '@mui/material'
+import axios from 'axios'
 import {
   SignalWifi1Bar,
   SignalWifi1BarLock,
@@ -22,49 +22,45 @@ import {
   SignalWifi3BarLock,
   SignalWifi4Bar,
   SignalWifi4BarLock,
-} from "@mui/icons-material";
-import theme from "./theme";
-import { LoadingButton } from "@mui/lab";
+} from '@mui/icons-material'
+import theme from './theme'
+import { LoadingButton } from '@mui/lab'
 
 function App() {
-  const [wifiNetworks, setWifiNetworks] = useState([]);
-  const [fetching, setFetching] = useState(false);
-  const [connecting, setConnecting] = useState(false);
+  const [wifiNetworks, setWifiNetworks] = useState([])
+  const [fetching, setFetching] = useState(false)
+  const [connecting, setConnecting] = useState(false)
 
-  const [completed, setCompleted] = useState(false);
+  const [completed, setCompleted] = useState(false)
 
-  const [selectedNetwork, setSelectedNetwork] = useState(null);
+  const [selectedNetwork, setSelectedNetwork] = useState(null)
 
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState('')
 
   useEffect(() => {
     async function fetchData() {
-      if (fetching) return;
-      setFetching(true);
-      const wifiNetworks = await axios.get("http://192.168.1.1:5000/scan");
-      console.log(wifiNetworks);
-      setWifiNetworks(wifiNetworks.data);
-      setFetching(false);
+      if (fetching) return
+      setFetching(true)
+      const wifiNetworks = await axios.get('http://192.168.1.1:5000/scan')
+      console.log(wifiNetworks)
+      setWifiNetworks(wifiNetworks.data)
+      setFetching(false)
     }
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   return (
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         {!selectedNetwork && (
-          <Grid container spacing={2} justifyContent={"center"}>
+          <Grid container spacing={2} justifyContent={'center'}>
             <List>
               {wifiNetworks &&
                 wifiNetworks.map((network) => (
                   <ListItem key={network.BSSID}>
-                    {network}
                     <ListItemButton onClick={() => setSelectedNetwork(network)}>
-                      <WifiStrengthIcon
-                        signal={network.SIGNAL}
-                        security={network.SECURITY}
-                      />
+                      <WifiStrengthIcon signal={network.SIGNAL} security={network.SECURITY} />
                       {network.SSID}
                     </ListItemButton>
                   </ListItem>
@@ -73,14 +69,14 @@ function App() {
           </Grid>
         )}
         {!completed && selectedNetwork && (
-          <Grid container spacing={2} justifyContent={"center"}>
+          <Grid container spacing={2} justifyContent={'center'}>
             <Grid item xs={12}>
-              <Grid container spacing={2} justifyContent={"center"}>
+              <Grid container spacing={2} justifyContent={'center'}>
                 <Typography variant="h6">{selectedNetwork.SSID}</Typography>
               </Grid>
             </Grid>
             <Grid item xs={12}>
-              <Grid container spacing={2} justifyContent={"center"}>
+              <Grid container spacing={2} justifyContent={'center'}>
                 <TextField
                   label="Password"
                   type="password"
@@ -90,7 +86,7 @@ function App() {
               </Grid>
             </Grid>
             <Grid item xs={12}>
-              <Grid container spacing={2} justifyContent={"center"}>
+              <Grid container spacing={2} justifyContent={'center'}>
                 <Grid item>
                   <Button
                     variant="contained"
@@ -107,19 +103,16 @@ function App() {
                     loading={connecting}
                     onClick={async () => {
                       try {
-                        setConnecting(true);
-                        const res = await axios.post(
-                          "http://192.168.1.1:5000/wifiCreds",
-                          {
-                            ssid: selectedNetwork.SSID,
-                            password,
-                          }
-                        );
-                        setConnecting(false);
-                        setCompleted(true);
+                        setConnecting(true)
+                        const res = await axios.post('http://192.168.1.1:5000/wifiCreds', {
+                          ssid: selectedNetwork.SSID,
+                          password,
+                        })
+                        setConnecting(false)
+                        setCompleted(true)
                       } catch (error) {
-                        console.error(error);
-                        setConnecting(false);
+                        console.error(error)
+                        setConnecting(false)
                       }
                     }}
                   >
@@ -131,19 +124,19 @@ function App() {
           </Grid>
         )}
         {completed && (
-          <Grid container spacing={2} justifyContent={"center"}>
+          <Grid container spacing={2} justifyContent={'center'}>
             <Grid item xs={12}>
-              <Typography variant="h3" sx={{ textAlign: "center" }}>
+              <Typography variant="h3" sx={{ textAlign: 'center' }}>
                 Connected!
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h6" sx={{ textAlign: "center" }}>
+              <Typography variant="h6" sx={{ textAlign: 'center' }}>
                 You are now connected to the network.
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h6" sx={{ textAlign: "center" }}>
+              <Typography variant="h6" sx={{ textAlign: 'center' }}>
                 You can now close this window, the GaragePi will restart
               </Typography>
             </Grid>
@@ -151,10 +144,10 @@ function App() {
         )}
       </ThemeProvider>
     </>
-  );
+  )
 }
 
-export default App;
+export default App
 
 function WifiStrengthIcon({ signal, security }) {
   // Excellent (Full Strength): ≥ -50 dBm
@@ -167,42 +160,42 @@ function WifiStrengthIcon({ signal, security }) {
   if (signal >= -50) {
     return (
       <ListItemIcon>
-        {security.includes("WPA") ? (
-          <SignalWifi1BarLock sx={{ color: "#fff" }} />
+        {security.includes('WPA') ? (
+          <SignalWifi1BarLock sx={{ color: '#fff' }} />
         ) : (
-          <SignalWifi1Bar sx={{ color: "#fff" }} />
+          <SignalWifi1Bar sx={{ color: '#fff' }} />
         )}
       </ListItemIcon>
-    );
+    )
   } else if (signal >= -60) {
     return (
       <ListItemIcon>
-        {security.includes("WPA") ? (
-          <SignalWifi2BarLock sx={{ color: "#fff" }} />
+        {security.includes('WPA') ? (
+          <SignalWifi2BarLock sx={{ color: '#fff' }} />
         ) : (
-          <SignalWifi2Bar sx={{ color: "#fff" }} />
+          <SignalWifi2Bar sx={{ color: '#fff' }} />
         )}
       </ListItemIcon>
-    );
+    )
   } else if (signal >= -70) {
     return (
       <ListItemIcon>
-        {security.includes("WPA") ? (
-          <SignalWifi3BarLock sx={{ color: "#fff" }} />
+        {security.includes('WPA') ? (
+          <SignalWifi3BarLock sx={{ color: '#fff' }} />
         ) : (
-          <SignalWifi3Bar sx={{ color: "#fff" }} />
+          <SignalWifi3Bar sx={{ color: '#fff' }} />
         )}
       </ListItemIcon>
-    );
+    )
   } else {
     return (
       <ListItemIcon>
-        {security.includes("WPA") ? (
-          <SignalWifi4BarLock sx={{ color: "#fff" }} />
+        {security.includes('WPA') ? (
+          <SignalWifi4BarLock sx={{ color: '#fff' }} />
         ) : (
-          <SignalWifi4Bar sx={{ color: "#fff" }} />
+          <SignalWifi4Bar sx={{ color: '#fff' }} />
         )}
       </ListItemIcon>
-    );
+    )
   }
 }
