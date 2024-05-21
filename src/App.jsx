@@ -61,8 +61,8 @@ function App() {
                   <ListItem key={network.mac}>
                     <ListItemButton onClick={() => setSelectedNetwork(network)}>
                       <WifiStrengthIcon
-                        signal={network.signal_level}
-                        security={network.security}
+                        signal={network.BARS}
+                        security={network.SECURITY}
                       />
                       {network.ssid}
                     </ListItemButton>
@@ -75,7 +75,7 @@ function App() {
           <Grid container spacing={2} justifyContent={"center"}>
             <Grid item xs={12}>
               <Grid container spacing={2} justifyContent={"center"}>
-                <Typography variant="h6">{selectedNetwork.ssid}</Typography>
+                <Typography variant="h6">{selectedNetwork.SSID}</Typography>
               </Grid>
             </Grid>
             <Grid item xs={12}>
@@ -110,7 +110,7 @@ function App() {
                         const res = await axios.post(
                           "http://192.168.1.1:5000/wifiCreds",
                           {
-                            ssid: selectedNetwork.ssid,
+                            ssid: selectedNetwork.SSID,
                             password,
                           }
                         );
@@ -155,7 +155,7 @@ function App() {
 
 export default App;
 
-function WifiStrengthIcon({ signal, security }) {
+function WifiStrengthIcon({ signalStrength, security }) {
   // Excellent (Full Strength): ≥ -50 dBm
   // Good: -50 dBm to -60 dBm
   // Fair: -60 dBm to -70 dBm
@@ -163,30 +163,32 @@ function WifiStrengthIcon({ signal, security }) {
 
   // security WPA2 - locked
 
-  if (signal >= -50) {
+  const signal = signalStrength.length;
+
+  if (signal >= 4) {
     return (
       <ListItemIcon>
-        {security === "WPA2-Personal" ? (
+        {security.includes("WPA") ? (
           <SignalWifi1BarLock sx={{ color: "#fff" }} />
         ) : (
           <SignalWifi1Bar sx={{ color: "#fff" }} />
         )}
       </ListItemIcon>
     );
-  } else if (signal >= -60) {
+  } else if (signal >= 3) {
     return (
       <ListItemIcon>
-        {security === "WPA2-Personal" ? (
+        {security.includes("WPA") ? (
           <SignalWifi2BarLock sx={{ color: "#fff" }} />
         ) : (
           <SignalWifi2Bar sx={{ color: "#fff" }} />
         )}
       </ListItemIcon>
     );
-  } else if (signal >= -70) {
+  } else if (signal >= 2) {
     return (
       <ListItemIcon>
-        {security === "WPA2-Personal" ? (
+        {security.includes("WPA") ? (
           <SignalWifi3BarLock sx={{ color: "#fff" }} />
         ) : (
           <SignalWifi3Bar sx={{ color: "#fff" }} />
@@ -196,7 +198,7 @@ function WifiStrengthIcon({ signal, security }) {
   } else {
     return (
       <ListItemIcon>
-        {security === "WPA2-Personal" ? (
+        {security.includes("WPA") ? (
           <SignalWifi4BarLock sx={{ color: "#fff" }} />
         ) : (
           <SignalWifi4Bar sx={{ color: "#fff" }} />
